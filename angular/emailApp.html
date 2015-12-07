@@ -129,6 +129,32 @@
             });
         }]);
     </script>
+	
+	<script>
+	/*
+	This is from http://stackoverflow.com/questions/16336987/angularjs-factory-http-returns-empty
+	
+	TODO: Incorporate this method instead of the one provided by CA
+	
+		myDemo.factory('photosFactory', function($resource) {
+			var factory = {};
+
+			factory.getPhotos = $resource('content/test_data.json', {}, {
+				'query': {method: 'GET', isArray: true}
+			});
+			return factory;
+		});
+
+		controllers.AppCtrl = function($scope, $location, $http, photosFactory) {
+			$scope.photos = [];
+			init();
+			function init() {
+				$scope.photos = photosFactory.getPhotos.query();
+			}
+		};
+		
+	*/
+	</script>
 </body>
 
 </html>

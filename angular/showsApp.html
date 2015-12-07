@@ -157,7 +157,7 @@
     <!-- Services -->
     <script>
         app.factory('shows', ['$http', function($http) {
-            return $http.get('https://dl.dropboxusercontent.com/u/110238630/ltp4-shows-api/shows.json').success(function(data) {
+            return $http.get('https://s3.amazonaws.com/codecademy-content/courses/ltp4/shows-api/shows.json').success(function(data) {
                 return data;
             }).error(function(data) {
                 return data;

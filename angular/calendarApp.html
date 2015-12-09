@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+<head>
+    <link href="https://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body,
+        html {
+            background: #ff3b4e;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        .container {
+            width: 75%;
+        }
+        
+        .main {
+            margin: 0 auto 0;
+        }
+        
+        .main h2 {
+            border-bottom: 1px solid #fff;
+            color: #fff;
+            font-size: 48px;
+            margin: 20px 0;
+            padding: 20px 0;
+        }
+        
+        .event {
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .event:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .event h3 {
+            color: #fff;
+            font-size: 24px;
+            margin: 0;
+        }
+        
+        .event p {
+            color: #fff;
+        }
+        
+        .event:hover a {
+            text-decoration: none;
+        }
+        
+        .event-detail p {
+            color: #fff;
+        }
+        
+        p.time {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.2.28/angular-route.min.js"></script>
+</head>
+
+<body ng-app="CalendarApp">
+    <div class="header">
+        <div class="container"> <img src="img/logo.svg" width="51" height="54"> </div>
+    </div>
+    <div class="main">
+        <div class="container">
+            <div ng-view></div>
+        </div>
+    </div>
+    <!-- Modules -->
+    <script>
+        var app = angular.module('CalendarApp', ['ngRoute']);
+        app.config(['$routeProvider', function($routeProvider) {
+            $routeProvider.when('/', {
+                controller: "DayController",
+                templateUrl: "views/day.html"
+            }).when('/:id', {
+                controller: 'EventController',
+                templateUrl: 'views/event.html'
+            }).otherwise({
+                redirectTo: '/'
+            });
+        }]);
+    </script>
+    <!-- Controllers -->
+    <script>
+        app.controller('DayController', ['$scope', 'events', function($scope, events) {
+            events.success(function(data) {
+                $scope.day = data;
+            });
+        }]);
+		/*		
+		<h2>{{ day.date | date:'EEEE' }} {{ day.date | date:'M' }}/{{ day.date | date:'d' }}</h2>
+		<div class="event" ng-repeat="event in day.events">
+		  <a href="#/{{$index}}">
+			<h3 class="name">{{ event.name }}</h3>
+			<p><span class="from">{{ event.from | date:'shortTime' }}</span> - <span class="to">{{ event.to | date:'shortTime' }}</span></p>
+		  </a>
+		</div>
+		*/
+        app.controller('EventController', ['$scope', 'events', '$routeParams', function($scope, events, $routeParams) {
+            events.success(function(data) {
+                $scope.event = data.events[$routeParams.id];
+            });
+        }]);
+		/*		
+		<div class="event-detail">
+		  <h2>{{ event.name }}</h2>
+		  <p class="time"><span class="from">{{ event.from | date:'shortTime' }}</span> - <span class="to">{{ event.to | date:'shortTime' }}</span></p>
+		  <p class="where">{{ event.where }}</p>
+		</div>
+		*/
+    </script>
+    <!-- Services -->
+    <script>
+        app.factory('events', ['$http', function($http) {
+            return $http.get('https://s3.amazonaws.com/codecademy-content/courses/ltp4/events-api/events.json').success(function(data) {
+                return data;
+            }).error(function(data) {
+                return data;
+            });
+        }]);
+		/*
+		{
+		  "date": 1421384400000,
+		  "events": [
+			{
+			  "name": "Casual Friday",
+			  "from": 1421384400000,
+			  "to": 1421470800000,
+			  "where": ""
+			},
+			{
+			  "name": "Taco Time",
+			  "from": 1421431200000,
+			  "to": 1421438400000,
+			  "where": "Brooklyn Taco Co. 120 Essex Street New York, NY 10002"
+			},
+			{
+			  "name": "Pottery Painting",
+			  "from": 1421449200000,
+			  "to": 1421452800000,
+			  "where": "The Art Cafe CH 326 Troy Avenue Brooklyn, NY 11213"
+			},
+			{
+			  "name": "Running",
+			  "from": 1421456400000,
+			  "to": 1421458200000,
+			  "where": ""
+			},
+			{
+			  "name": "Grocery Shopping",
+			  "from": 1421460000000,
+			  "to": 1421461800000,
+			  "where": ""
+			}
+		  ]
+		}
+		*/
+    </script>
+</body>
+
+</html>

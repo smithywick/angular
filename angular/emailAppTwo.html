@@ -174,11 +174,28 @@
                 $scope.email = data[$routeParams.id];
             });
         }]);
+		/*
+		<a class="back" href="#/outbox">Back</a>
+
+		<div class="email-view">
+		  <h2 class="subject">{{emails.subject}}</h2>
+		  <span class="from">{{emails.from}}</span><span class="date">{{emails.datetime | date:'short'}}</span>
+		  <p class="message">{{emails.message}}</p>
+		</div>
+		*/
         app.controller('HomeController', ['$scope', 'emails', function($scope, emails) {
             emails.success(function(data) {
                 $scope.emails = data;
             });
         }]);
+		
+		/*
+		<div class="email" ng-repeat="email in emails">
+		  <a href="#/outbox/{{$index}}">
+			<span class="from">{{ email.from }}</span><span class="subject">{{ email.subject }}</span><span class="date">{{ email.datetime | date }}</span>
+		  </a>
+		</div>
+		*/
         app.factory('emails', ['$http', function($http) {
             return $http.get('https://s3.amazonaws.com/codecademy-content/courses/ltp4/emails-api/emails.json').success(function(data) {
                 return data;

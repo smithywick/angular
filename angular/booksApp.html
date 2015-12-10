@@ -234,12 +234,34 @@
                 $scope.myBooks = data;
             });
         }]);
+		/*		
+		<div class="bookshelf row">
+		  <div class="book col-md-3" ng-repeat="book in myBooks">
+			<a href="#/books/{{$index}}">
+			  <img ng-src="{{ book.cover }}">
+			  <h3 class="title">{{ book.title }}</h3>
+			  <p class="author">{{ book.author }}</p>
+			</a>
+		  </div>
+		</div>
+		*/
         app.controller('BookController', ['$scope', 'books', '$routeParams', function($scope, books, $routeParams) {
             books.success(function(data) {
                 $scope.book = data[$routeParams.book];
             });
             $scope.currentBookIndex = parseInt($routeParams.book);
         }]);
+		/*
+		<a class="button back" href="#/books">Back</a>
+		<div class="book-detail">
+		  <img ng-src="{{ book.cover }}">
+		  <h3 class="title">{{ book.title }}</h3>
+		  <p class="author">{{ book.author }}</p>
+		  <p class="description">{{ book.description }}</p>
+
+		  <a class="button" href="#/books/{{ currentBookIndex }}/chapters/0">Read</a>
+		</div>
+		*/
         app.controller('ChapterController', ['$scope', 'books', '$routeParams', function($scope, books, $routeParams) {
             books.success(function(data) {
                 $scope.book = data[$routeParams.book];
@@ -252,6 +274,15 @@
             $scope.currentChapterIndex = parseInt($routeParams.chapter);
             $scope.nextChapterIndex = $scope.currentChapterIndex + 1;
         }]);
+		/*		
+		<a class="button back" href="#/books/{{ currentBook }}">Back</a>
+		<div class="chapter">
+		  <p><span class="title">{{ book.title }}</span> <span class="author">{{ book.author }}</span></p>
+		  <h2 class="chapter-title">{{ chapter.title }}</h2>
+		  <p ng-repeat="paragraph in chapter.paragraphs">{{ paragraph }}</p>
+		  <a class="button next" href="#/books/{{ currentBookIndex }}/chapters/{{ nextChapterIndex }}">Next</a>
+		</div>
+		*/
     </script>
     <!-- Services -->
     <script>
